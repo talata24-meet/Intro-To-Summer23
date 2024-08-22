@@ -14,8 +14,8 @@ def dislikes(youtube_video):
 
 def add_comment(youtube_video,username,comment_text):
 	if "comments" in youtube_video:
-		youtube_video["comments"]
-	return youtube_video
+		youtube_video["comments"][username]= comment
+	return video
 
 myVideo=create_youtube_video("lol", "womp womp")
 myVideo=like(myVideo)
