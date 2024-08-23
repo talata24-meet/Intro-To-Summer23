@@ -1,5 +1,6 @@
 from flask import Flask,render_template, request, redirect, url_for
 import random
+from flask import session 
 
 app = Flask(__name__,
 template_folder="templates",
@@ -15,7 +16,8 @@ def home():
 		animal = request.form['animal']
        
 		return redirect(url_for('fortune',
-            b = birth_month))
+            b = birth_month,
+            n = firstname))
             
 
 	return render_template("home.html")
@@ -36,7 +38,16 @@ def fortune(b):
 	lol = len(b)
 	return render_template("fortune.html",fortune = fortunes[lol-1])
 
-
+@app.route("/", methods = ["GET","POST"])
+def no():
+	if request.method == 'GET':
+		return render_template('login.html')
+	else:
+		name = request.form['firstname']
+		birth_month = request.form['birthmonth']
+		session["name"]= firstname
+		session["birth month"]= birth_month
+		return redirect(url_for('fortune'))
 
 
 
