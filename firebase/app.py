@@ -8,7 +8,7 @@ firebaseConfig = {
   'storageBucket': "authentication-lab-d80bb.appspot.com",
   'messagingSenderId': "573605879154",
  ' appId': "1:573605879154:web:71b09e5cc8da9dcad4d1eb",
- 'databaseURL':""
+ 'databaseURL':"https://authentication-lab-d80bb-default-rtdb.firebaseio.com"
 }
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -17,7 +17,7 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth= firebase.auth()
-
+db = firebase.database()
 app.config['SECRET_KEY']='LOL'
 
 
@@ -32,23 +32,31 @@ def signin():
   else:
     email = request.form['email']
     password = request.form['password']
-    return redirect(url_for('fortune'))
-    
+    return redirect(url_for('home'))
+ 
 
-
-
-
-
-
+@app.route("/signout", methods = ["GET","POST"])
+def signout():
+  return redirect(url_for('signin'))
+  
+  
+  
+  
+  
 @app.route("/home", methods = ["GET","POST"])
 def home():
+  if request.method == "POST":
+    messages = request.form['msg']
+    session["quotes"]="msg"
+    return redirect(url_for('thanx'))
+  else:
     return render_template('home.html')
   
 
 
 @app.route("/thanx", methods = ["GET","POST"])
 def thanx():
-    return render_template('thanx.html')
+  return render_template('thanx.html')
   
 
 
@@ -56,7 +64,8 @@ def thanx():
 
 @app.route("/display", methods = ["GET","POST"])
 def display():
-    return render_template('display.html')
+  quote = session.get("quotes", [])
+  return render_template('display.html', quote = quote)
  
 
 

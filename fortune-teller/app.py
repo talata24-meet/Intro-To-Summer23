@@ -45,7 +45,7 @@ def no():
 	else:
 		name = request.form['firstname']
 		birth_month = request.form['birthmonth']
-		session["name"]= firstname
+		session["name"]= firstnameor
 		session["birth month"]= birth_month
 		return redirect(url_for('fortune'))
 
